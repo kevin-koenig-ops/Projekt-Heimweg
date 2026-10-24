@@ -91,7 +91,7 @@ export function floorFor(region: RegionId, season: Season): Floor | undefined {
   const kind = region === 'wild' && s === 'winter' ? undefined : FLOOR_GROUND[region];
   const own = kind ? tex(`${kind}-${s}`) ?? tex(kind) : undefined;
   const paved = kind === 'pflaster' && !!own;
-  const grass = own ?? (region === 'desert' ? tex('sand') : undefined) ?? tex(`wiese-${s}`);
+  const grass = own ?? (region === 'desert' ? tex(`sand-${s}`) ?? tex('sand') : undefined) ?? tex(`wiese-${s}`);
   // Die Bilder sind für die Draufsicht gemalt und wirken im warmen Kampflicht zu hell; Schnee nur
   // wenig abdunkeln und etwas kühler, sonst wird er bräunlich. Pflaster grau statt gelblich.
   const tint: [string, string] = s === 'winter' ? ['#c9ccd2', '#d4d8de'] : ['#8e877c', paved ? '#a29f98' : '#9c9a7e'];
