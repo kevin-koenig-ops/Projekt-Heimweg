@@ -33,7 +33,7 @@ Das Kartensystem wird zum Rückgrat. Erst mehr Karten, dann längere Kämpfe.
 
 - **Überlebende ziehen ein:** Menschen mit Name, Geschichte und Fähigkeit wohnen sichtbar bei dir zu Hause, wünschen sich Möbel und geben kleine Aufträge. Gut versorgt helfen sie mehr; niemand stirbt, wenn du mal nicht spielst. Sie schreiben Briefe, haben Geburtstag und singen samstags am Lagerfeuer mit.
 - **Tauschhändler mit Wochenkurs:** montags einkaufen, unter der Woche zu wechselnden Kursen tauschen (wie der Rübenmarkt bei Animal Crossing), nur mit Spiel-Rohstoffen.
-- **Kampagnen (Kevin, 24.10.):** Geschichte und Aufträge kommen als mehrere Kampagnen. Jede ist für sich spielbar und erzählt einen Ausschnitt der Lore, zusammen ergeben sie die Welt. Details im [Konzept](KONZEPT.md) unter „Kampagnen“.
+- **Kampagnen (Kevin, 24.10.):** Geschichte und Aufträge kommen als mehrere Kampagnen. Jede ist für sich spielbar und erzählt einen Ausschnitt der Lore, zusammen ergeben sie die Welt. Horizontal erweiterbar: neue Kampagnen kommen als Daten dazu, ohne die alten anzufassen. Details im [Konzept](KONZEPT.md) unter „Kampagnen“.
 - **Quests mit Witcher-Anspruch:** wenige, aber gute Aufträge, die in Stadt und Dorf funktionieren, gern mit echten Straßennamen („Bring Medizin aus der Apotheke in der Bahnhofstraße zum Stadtpark“).
 - **Funk ausbauen:** Aufträge zu echten Orten in der Nähe, dazu Nachrichten, die das Funkgerät erst nach gelaufenen Kilometern entschlüsselt (das Funkgerät mit Funksprüchen und Versteck-Hinweisen gibt es schon).
 - **Der rote Faden:** Kapitel-Reise mit sichtbarem Endziel, jeden Samstag eine neue Funk-Folge auf Kanal 4 (zum Nachhören). Details im [Konzept](KONZEPT.md).

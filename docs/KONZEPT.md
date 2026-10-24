@@ -87,6 +87,7 @@ Aufträge und Geschichte kommen als **mehrere Kampagnen**. Jede erzählt ihre ei
 - **Kein Zwang:** Kampagnen laufen nicht ab. Man kann sie jederzeit pausieren und später weitermachen. Draußen sind die Schritte kurz, zu Hause liegt die Tiefe (lesen, knobeln, zusammensetzen).
 - **Für alle machbar:** Jeder Schritt hat eine Stadt- und eine Landfassung. Ziele hängen an der eigenen Umgebung, nicht an festen Orten, nach denselben Regeln wie bei „Aufträge aus echten Kartendaten“. Nie an heiklen Orten, keine echten Namen von Läden oder Menschen.
 - **Belohnung:** vor allem Geschichte, dazu eigene Erinnerungsstücke und etwas fürs Zuhause, manchmal eine Karte, die es nur in dieser Kampagne gibt, oder ein neuer Bewohner.
+- **Horizontal erweiterbar (Kevin, 24.10.):** Neue Kampagnen kommen einfach dazu, ohne dass sich an den bestehenden etwas ändert. Keine baut auf einer anderen auf, alle nutzen dieselben Bausteine. Im Spiel ist eine Kampagne nur Daten (Texte, Schritte, Belohnungen in `content.ts`, dazu Bilder). Eine neue Kampagne heißt also: Geschichte schreiben, Daten eintragen, fertig. So kann das Spiel über Jahre wachsen, und auch spätere Saisons oder Kapitel können eine Kampagne mitbringen.
 - **Das Weltbild zu Hause (Vorschlag):** Eine Chronik an der Wand, gebaut aus der Zeittafel der Lore. Jede abgeschlossene Kampagne deckt ihren Teil auf. So sieht man, wie die Geschichten zusammen die Welt ergeben.
 
 **Mögliche Kampagnen aus der Lore (Ideen, noch nicht entschieden):**
