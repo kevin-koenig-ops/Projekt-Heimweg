@@ -77,6 +77,27 @@ Am Handy braucht es einen Sog: etwas, das man erleben will, ein Rätsel, das man
 - **Der Rhythmus:** jeden Tag Zielleiste und „Heute zu Hause“, montags ein neues Raid-Nest, samstags Lagerfeuer und Funk-Folge, alle zwei bis drei Monate eine Saison. Raids bleiben zwei Wochen offen.
 - **Die ersten 10 Minuten** zeigen den Haken schon: erster Fund, erster Wandler, abends der abgebrochene Funkspruch, und in der Kapitel-Übersicht leuchtet in der Ferne das graue Endziel.
 
+## Kampagnen: Geschichten, die zusammen die Welt erzählen (Kevin, 24.10.2026)
+
+Aufträge und Geschichte kommen als **mehrere Kampagnen**. Jede erzählt ihre eigene Geschichte. Zusammen erzählen sie die Welt, so wie sie in der Lore steht (`docs/LORE.md`). **Jede Kampagne lässt sich für sich spielen.**
+
+- **Eigenständig:** Jede Kampagne hat einen eigenen Anfang und ein eigenes Ende. Man braucht kein Vorwissen und keine andere Kampagne, die Reihenfolge ist egal. Wer mehrere spielt, erkennt Zusammenhänge (dieselben Namen, Orte, Gegenstände, Funkstimmen) und versteht die Welt nach und nach immer besser.
+- **Die Lore ist die Quelle:** Jede Kampagne zeigt einen Ausschnitt aus Kevins Lore, zum Beispiel einen Zeitabschnitt, einen Ort oder eine Gruppe. Kampagnen ändern die Lore nicht, sie erzählen sie. Die Biologie wird nie ganz erklärt, der Ton bleibt geerdet, ohne Splatter.
+- **Bausteine:** Eine Kampagne besteht aus Schritten, die es im Spiel schon gibt oder die geplant sind: Aufträge aus echten Kartendaten, Fälle und kleine Rätsel, Funksprüche, besondere Orte, Erinnerungsstücke, Kämpfe (nur im Stehen), später Bewohner.
+- **Kein Zwang:** Kampagnen laufen nicht ab. Man kann sie jederzeit pausieren und später weitermachen. Draußen sind die Schritte kurz, zu Hause liegt die Tiefe (lesen, knobeln, zusammensetzen).
+- **Für alle machbar:** Jeder Schritt hat eine Stadt- und eine Landfassung. Ziele hängen an der eigenen Umgebung, nicht an festen Orten, nach denselben Regeln wie bei „Aufträge aus echten Kartendaten“. Nie an heiklen Orten, keine echten Namen von Läden oder Menschen.
+- **Belohnung:** vor allem Geschichte, dazu eigene Erinnerungsstücke und etwas fürs Zuhause, manchmal eine Karte, die es nur in dieser Kampagne gibt, oder ein neuer Bewohner.
+- **Das Weltbild zu Hause (Vorschlag):** Eine Chronik an der Wand, gebaut aus der Zeittafel der Lore. Jede abgeschlossene Kampagne deckt ihren Teil auf. So sieht man, wie die Geschichten zusammen die Welt ergeben.
+
+**Mögliche Kampagnen aus der Lore (Ideen, noch nicht entschieden):**
+- **Kanal 4:** die Stimme im Funk und das Gerücht von der Küste (der bisher geplante rote Faden wird damit eine Kampagne unter mehreren).
+- **Elysis:** Spuren des Pflanzenprojekts von 2010 bis 2014, Laborzettel, ein vergessener Versuchsacker.
+- **Das Weinen:** die Notlazarette 2019 und 2020, was in den Notlazarett-Kisten steckt und wer sie gepackt hat.
+- **Bitterfeld:** der Krieg und die Leute, die ihn geführt haben, Konvoi-Wracks, Deserteure.
+- **Die Streifer:** wer sich in die Städte wagt und warum ein ganzer Trupp nicht zurückkam.
+
+**Verhältnis zu anderen Plänen:** Kapitel (große Ereignisse von etwa zwei Wochen) bleiben Ereignisse auf Zeit. Kampagnen sind dagegen jederzeit spielbar. Fälle und Aufträge aus Kartendaten sind die Bausteine dafür. **Offen:** wie viele Kampagnen gleichzeitig laufen dürfen (Vorschlag: höchstens drei, wie bei den Aufträgen) und ob es ein gemeinsames Ende gibt, ohne dass eine Kampagne eine andere voraussetzt.
+
 ## Langsamer Aufbau (geplant)
 
 Das Spiel öffnet sich wie eine Geschichte: erst wenig, dann immer mehr. Jedes neue Spielteil kommt mit einem kleinen Moment (ein Funkspruch, ein Fund, ein Besucher), nie als Wand aus Erklärungen. Was noch nicht freigeschaltet ist, taucht nicht in Menüs auf, höchstens als graues Kapitel in der Übersicht.
