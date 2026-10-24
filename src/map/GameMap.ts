@@ -13,7 +13,8 @@ import { FogOfWar } from './fogOfWar';
 import { WaterAnimation } from './waterAnim';
 import demoWorld from './demoWorld.json';
 import { hasOptionalTexture, loadTextures, patternImage, textureColor } from './patterns';
-import { GroundPainter, geojsonQuery } from './groundPaint';
+import { GroundService, groundImages } from './groundService';
+import type { GroundSource } from './groundWorker';
 import { seasonMonth, type Season } from '../services/settings';
 import { buildStyle, DECOR_MINZOOM, loadRealSource } from './style';
 import type { WalkInput } from './walkNet';
@@ -102,23 +103,27 @@ export const DEMO = demoWorld as unknown as {
   geojson: GeoJSON.FeatureCollection;
 };
 
-// Boden selbst malen: Die Karte holt Kacheln über die Adresse boden://z/x/y, das Spiel malt sie (groundPaint.ts)
-let groundPainter: GroundPainter | null = null;
+// Boden selbst malen: Die Karte holt Kacheln über die Adresse boden://z/x/y, das Spiel malt sie
+// im Hintergrund-Thread (groundService.ts, groundWorker.ts, groundPaint.ts)
+let groundService: GroundService | null = null;
+/** Woher der Boden gerade seine Daten hat (Demo-Dorf oder Adresse der Kartenkacheln). */
+let groundKey = '';
 let groundProtocol = false;
 function registerGround() {
   if (groundProtocol) return;
   groundProtocol = true;
-  maplibregl.addProtocol('boden', async (params) => {
+  maplibregl.addProtocol('boden', async (params, abort) => {
     const m = /^boden:\/\/(\d+)\/(\d+)\/(\d+)/.exec(params.url);
-    if (!m || !groundPainter) throw new Error('kein Boden');
-    const t0 = performance.now();
-    const data = await groundPainter.paint(Number(m[1]), Number(m[2]), Number(m[3]));
-    if (localStorage.getItem('endstation.debug')) console.log(`[Boden] ${m[1]}/${m[2]}/${m[3]} ${Math.round(performance.now() - t0)} ms`);
+    if (!m || !groundService) throw new Error('kein Boden');
+    const data = await groundService.paint(Number(m[1]), Number(m[2]), Number(m[3]), abort.signal);
     return { data };
   });
 }
 /** Alte Musterflächen, die der gemalte Boden ersetzt (Friedhöfe bleiben schlicht darüber). */
 const PATTERN_LAYERS = /^(landuse-(residential|industrial|green)|landcover-|soft-)/;
+/** Ab dieser Stufe malt das Spiel den Boden selbst; weiter draußen bleiben die Musterflächen.
+ *  (Die Kacheln sind 512 Punkte groß, die Karte holt also Kacheln eine Stufe darunter.) */
+const GROUND_MINZOOM = 15;
 
 interface Options {
   mode: 'real' | 'demo';
@@ -1174,38 +1179,84 @@ export class GameMap {
 
   private groundOn = false;
   private groundRev = 0;
+  /** Ursprüngliche Zoomstufen der Musterflächen (solange der Boden gemalt wird, enden sie bei Stufe 14). */
+  private patternZoom = new Map<string, [number, number]>();
 
   /**
-   * Boden selbst malen an oder aus (Einstellung „Boden“). Bisher nur im Demo-Dorf: Für die echte
-   * Karte fehlt noch das Lesen der Kartenkacheln.
+   * Boden selbst malen an oder aus (Einstellung „Boden der Karte“). Im Demo-Dorf aus dessen Daten,
+   * auf der echten Karte aus den Kartenkacheln (die liest der Hintergrund-Thread selbst).
    */
   setGroundPaint(on: boolean) {
     this.opts.groundPaint = on;
-    if (!this.loaded) return;
-    const want = on && this.opts.mode === 'demo';
-    if (want === this.groundOn) return;
-    this.groundOn = want;
-    if (want) {
-      registerGround();
-      groundPainter ??= new GroundPainter(geojsonQuery(DEMO.geojson), { image: (id) => patternImage(id)?.data ?? null, color: textureColor });
-      if (!this.map.getSource('boden')) {
-        const [[w, s], [e, n]] = DEMO.bounds;
-        this.map.addSource('boden', { type: 'raster', tiles: [`boden://{z}/{x}/{y}?v=${this.groundRev}`], tileSize: 512, minzoom: 14, maxzoom: 19, bounds: [w, s, e, n] });
-      }
-      const before = this.map.getStyle().layers.find((l) => PATTERN_LAYERS.test(l.id))?.id;
-      if (!this.map.getLayer('boden')) this.map.addLayer({ id: 'boden', type: 'raster', source: 'boden', paint: { 'raster-fade-duration': 0, 'raster-resampling': 'linear' } }, before);
+    if (!this.loaded || on === this.groundOn) return;
+    if (!on) {
+      this.groundOn = false;
+      this.showGround(false);
+      return;
     }
-    for (const l of this.map.getStyle().layers) if (PATTERN_LAYERS.test(l.id)) this.map.setLayoutProperty(l.id, 'visibility', want ? 'none' : 'visible');
-    if (this.map.getLayer('boden')) this.map.setLayoutProperty('boden', 'visibility', want ? 'visible' : 'none');
+    void this.groundSource().then((source) => {
+      if (localStorage.getItem('endstation.debug')) console.log('[Boden] Daten:', source ? (source.kind === 'mvt' ? source.template : 'Demo-Dorf') : 'keine');
+      // Inzwischen wieder ausgeschaltet oder Karte weg: nichts tun
+      if (!source || !this.opts.groundPaint || this.groundOn || !this.map.getStyle()) return;
+      const key = source.kind === 'geojson' ? 'demo' : source.template;
+      if (!groundService || groundKey !== key) {
+        groundService?.dispose();
+        groundService = new GroundService(source, () => groundImages((id) => patternImage(id)?.data ?? null, textureColor));
+        groundKey = key;
+      } else groundService.refresh();
+      registerGround();
+      this.groundOn = true;
+      this.showGround(true);
+    }).catch((e) => console.warn('[Boden]', e));
+  }
+
+  /** Daten für den gemalten Boden: Demo-Dorf oder die Kachel-Adresse der echten Karte. */
+  private async groundSource(): Promise<GroundSource | null> {
+    if (this.opts.mode === 'demo') return { kind: 'geojson', fc: DEMO.geojson };
+    type Tiled = { tiles?: string[]; maxzoom?: number };
+    const read = () => {
+      const src = this.map.getSource('omt') as unknown as Tiled | undefined;
+      return src?.tiles?.[0] ? { kind: 'mvt' as const, template: src.tiles[0], maxzoom: Math.min(14, src.maxzoom ?? 14) } : null;
+    };
+    // Die Kachel-Adresse kennt die Karte erst, wenn sie die Beschreibung der Quelle geladen hat
+    for (let i = 0; i < 20 && !read(); i++) await new Promise((r) => setTimeout(r, 250));
+    return read();
+  }
+
+  /** Gemalte Kacheln zeigen und die Musterflächen auf weite Sicht beschränken (oder umgekehrt). */
+  private showGround(on: boolean) {
+    if (on && !this.map.getSource('boden')) {
+      const bounds = this.opts.mode === 'demo' ? DEMO.bounds.flat() : undefined;
+      this.map.addSource('boden', {
+        type: 'raster',
+        tiles: [`boden://{z}/{x}/{y}?v=${this.groundRev}`],
+        tileSize: 512,
+        minzoom: GROUND_MINZOOM - 1,
+        maxzoom: 19,
+        ...(bounds ? { bounds: bounds as [number, number, number, number] } : {}),
+      });
+    }
+    if (on && !this.map.getLayer('boden')) {
+      const before = this.map.getStyle().layers.find((l) => PATTERN_LAYERS.test(l.id))?.id;
+      this.map.addLayer({ id: 'boden', type: 'raster', source: 'boden', minzoom: GROUND_MINZOOM, paint: { 'raster-fade-duration': 0, 'raster-resampling': 'linear' } }, before);
+    }
+    // Musterflächen: nah gemalt, von weitem (unter GROUND_MINZOOM) weiter als Muster
+    for (const l of this.map.getStyle().layers) {
+      if (!PATTERN_LAYERS.test(l.id)) continue;
+      if (!this.patternZoom.has(l.id)) this.patternZoom.set(l.id, [l.minzoom ?? 0, l.maxzoom ?? 24]);
+      const [min, max] = this.patternZoom.get(l.id)!;
+      this.map.setLayerZoomRange(l.id, min, on ? Math.min(max, GROUND_MINZOOM) : max);
+    }
+    if (this.map.getLayer('boden')) this.map.setLayoutProperty('boden', 'visibility', on ? 'visible' : 'none');
     // Unter den Kacheln (solange sie noch gemalt werden) die mittlere Bodenfarbe statt des Musters
-    this.map.setPaintProperty('ground', 'background-pattern', want ? undefined : 'pat-ground');
-    if (want) this.map.setPaintProperty('ground', 'background-color', textureColor('pat-ground') ?? '#7a6a4c');
+    this.map.setPaintProperty('ground', 'background-pattern', on ? undefined : 'pat-ground');
+    if (on) this.map.setPaintProperty('ground', 'background-color', textureColor('pat-ground') ?? '#7a6a4c');
   }
 
   /** Neue Bodenbilder (Jahreszeit): gemalte Kacheln neu malen lassen. */
   private refreshGround() {
     if (!this.groundOn) return;
-    groundPainter?.invalidate();
+    groundService?.refresh();
     this.groundRev++;
     (this.map.getSource('boden') as maplibregl.RasterTileSource | undefined)?.setTiles([`boden://{z}/{x}/{y}?v=${this.groundRev}`]);
     this.map.setPaintProperty('ground', 'background-color', textureColor('pat-ground') ?? '#7a6a4c');

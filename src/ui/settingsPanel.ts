@@ -244,7 +244,7 @@ export function settingsPanel(app: App, opts: { onDeleted?: () => void } = {}): 
         ),
         row(lbl('set-water', 'Bewegtes Wasser', 'Wellen und Glitzern auf der Karte und am See. Aus spart etwas Akku.'), waterToggle),
         row(
-          h('div', { class: 'set-label', id: 'lbl-ground' }, 'Boden der Karte', h('small', null, 'Neu: selbst gemalt, mit weichen Rändern, Höfen und Gehwegen. Bisher eine Probe, nur im Demo-Dorf. Alt: die bisherigen Muster.')),
+          h('div', { class: 'set-label', id: 'lbl-ground' }, 'Boden der Karte', h('small', null, 'Neu: selbst gemalt, mit weichen Rändern, Höfen und Gehwegen (aus der Nähe). Alt: die bisherigen Muster. Läuft Neu auf deinem Handy zäh, nimm Alt.')),
           segmented('ground', 'lbl-ground', [
             ['paint', 'Neu'],
             ['pattern', 'Alt'],

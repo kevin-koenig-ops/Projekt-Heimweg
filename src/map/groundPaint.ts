@@ -5,6 +5,8 @@
 //     Gärten bleiben dazwischen und dahinter
 //   - die Texturen hängen fest am Boden (Meter statt Bildschirmpunkte), nichts springt beim Zoomen
 // Die Karte legt die fertigen Bilder als Rasterkacheln unter Wasser, Straßen und Häuser.
+// Gemalt wird im Hintergrund-Thread (groundWorker.ts), die Daten kommen aus dem Demo-Dorf
+// (geojsonQuery) oder aus den Kartenkacheln der echten Karte (vectorTiles.ts).
 
 /** Eine Fläche oder Linie aus den Kartendaten, in Längen- und Breitengrad. */
 export interface GroundFeature {
@@ -20,8 +22,8 @@ export interface GroundFeature {
   bbox: [number, number, number, number];
 }
 
-/** Liefert alle Flächen und Linien, die den Ausschnitt berühren. */
-export type GroundQuery = (w: number, s: number, e: number, n: number) => GroundFeature[];
+/** Liefert alle Flächen und Linien, die den Ausschnitt berühren (sofort oder nach dem Laden). */
+export type GroundQuery = (w: number, s: number, e: number, n: number) => GroundFeature[] | Promise<GroundFeature[]>;
 
 /** Woher die Bilder kommen (map/patterns.ts, mit den Bildern der Jahreszeit). */
 export interface GroundTextures {
@@ -57,6 +59,7 @@ const MAT = {
   sand: { tex: 'pat-sand', worldM: 10, edge: 'wild' },
   gravel: { tex: 'pat-gravel', worldM: 12, edge: 'soft' },
   rock: { tex: 'pat-rock', worldM: 12, edge: 'wild' },
+  ice: { tex: 'pat-ice', worldM: 16, edge: 'wild' },
   pitch: { tex: 'pat-pitch', worldM: 16, edge: 'soft' },
   playground: { tex: 'pat-playground', worldM: 10, edge: 'soft' },
   gardens: { tex: 'pat-gardens', worldM: 18, edge: 'wild' },
@@ -72,6 +75,8 @@ const MAT = {
   walk: { tex: 'pat-paved', worldM: 8, edge: 'crisp' },
 } satisfies Record<string, Mat>;
 type MatId = keyof typeof MAT;
+/** Alle Bilder, die der gemalte Boden braucht (für den Hintergrund-Thread). */
+export const GROUND_TEXTURES: string[] = [...new Set(Object.values(MAT).map((m) => m.tex))];
 
 /** Wie breit die Straßen der Karte gemalt sind (Meter), damit der Gehweg daneben anfängt. */
 const ROAD_M: Record<string, number> = { motorway: 9, trunk: 9, primary: 8.5, secondary: 8.5, tertiary: 7, minor: 5.6, residential: 5.6, unclassified: 5.6, living_street: 5, service: 4 };
@@ -165,6 +170,7 @@ function blur(a: Float32Array, n: number, r: number) {
 }
 
 function canvas(w: number, h: number): HTMLCanvasElement | OffscreenCanvas {
+  // Im Hintergrund-Thread gibt es nur OffscreenCanvas; im Hauptthread notfalls eine normale Leinwand
   if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h);
   const c = document.createElement('canvas');
   c.width = w;
@@ -228,19 +234,36 @@ export class GroundPainter {
     return m;
   }
 
-  /** Eine Kachel malen. */
+  /** Eine Kachel malen (Daten holen, dann malen). */
   async paint(z: number, x: number, y: number): Promise<ImageBitmap> {
+    return this.paintFeatures(z, x, y, await this.features(z, x, y));
+  }
+
+  /** Maßstab der Kachel: Meter je Bildpunkt und wie weit die Hausdichte über den Rand schaut. */
+  private scale(z: number, y: number) {
     const zs = 2 ** z * S;
-    const ox = x * S - MARGIN;
     const oy = y * S - MARGIN;
-    // Breitengrad der Kachel (mit Rand)
-    const north = tileLat(oy / S, z);
-    const south = tileLat((oy + W) / S, z);
-    const latC = (north + south) / 2;
+    const latC = (tileLat(oy / S, z) + tileLat((oy + W) / S, z)) / 2;
     // Für Bildgröße und Rauschen ein fester Breitengrad je Gradband: so passen Nachbarkacheln nahtlos
     const latRef = Math.floor(latC) + 0.5;
     const metersPerWorld = EARTH * Math.cos((latRef * Math.PI) / 180);
     const mpp = metersPerWorld / zs;
+    return { zs, metersPerWorld, mpp, ext: Math.ceil(DENSITY_EXT_M / mpp) };
+  }
+
+  /** Alle Flächen und Linien für eine Kachel (mit Rand), sofort oder nach dem Laden. */
+  features(z: number, x: number, y: number): GroundFeature[] | Promise<GroundFeature[]> {
+    const ox = x * S - MARGIN;
+    const oy = y * S - MARGIN;
+    const { ext } = this.scale(z, y);
+    return this.query(tileLon((ox - ext) / S, z), tileLat((oy + W + ext) / S, z), tileLon((ox + W + ext) / S, z), tileLat((oy - ext) / S, z));
+  }
+
+  /** Eine Kachel aus fertigen Daten malen (ohne Warten zwischendurch, die Leinwände sind geteilt). */
+  paintFeatures(z: number, x: number, y: number, feats: GroundFeature[]): Promise<ImageBitmap> {
+    const ox = x * S - MARGIN;
+    const oy = y * S - MARGIN;
+    const { zs, metersPerWorld, mpp, ext } = this.scale(z, y);
     const cell = Math.max(1, Math.round(Math.max(CELL_M, mpp * 2) / mpp));
     const n = Math.ceil(W / cell);
     if (this.mask.width !== n) {
@@ -249,9 +272,6 @@ export class GroundPainter {
       this.maskCtx = ctx2d(this.mask, true);
     }
     const toPx = (lon: number, lat: number): [number, number] => [((lon + 180) / 360) * zs - ox, mercY(lat) * zs - oy];
-    // Für die Dichte der Häuser auch etwas weiter drumherum schauen (sonst Nähte zwischen Kacheln)
-    const ext = Math.ceil(DENSITY_EXT_M / mpp);
-    const feats = this.query(tileLon((ox - ext) / S, z), tileLat((oy + W + ext) / S, z), tileLon((ox + W + ext) / S, z), tileLat((oy - ext) / S, z));
 
     // --- Flächen sortieren -------------------------------------------------------------------
     const groups = new Map<MatId, GroundFeature[]>();
@@ -268,6 +288,7 @@ export class GroundPainter {
         else if (cls === 'wetland') add('wet', f);
         else if (cls === 'sand') add(sub === 'beach' || sub === 'dune' ? 'sand' : 'gravel', f);
         else if (cls === 'rock') add('rock', f);
+        else if (cls === 'ice' || cls === 'glacier') add('ice', f);
       } else if (layer === 'landuse') {
         if (cls === 'residential' || cls === 'suburb' || cls === 'neighbourhood') {
           add('gardens', f);
@@ -391,7 +412,8 @@ export class GroundPainter {
       const sc = period / lvl.width;
       const tx = -(((ox % period) + period) % period);
       const ty = -(((oy % period) + period) % period);
-      pat.setTransform(new DOMMatrix([sc, 0, 0, sc, tx, ty]));
+      // Als einfache Zahlen statt DOMMatrix: die gibt es nicht in jedem Hintergrund-Thread
+      pat.setTransform({ a: sc, b: 0, c: 0, d: sc, e: tx, f: ty });
       c.fillStyle = pat;
       c.fillRect(0, 0, W, W);
     };
@@ -426,7 +448,7 @@ export class GroundPainter {
     main.globalCompositeOperation = 'source-over';
     fillWith(main, 'ground');
 
-    const order: MatId[] = ['meadow', 'farmA', 'farmB', 'lawn', 'pitch', 'playground', 'wood', 'woodFar', 'wet', 'sand', 'gravel', 'rock', 'gardens', 'commercial', 'industrial', 'railyard', 'quarry'];
+    const order: MatId[] = ['meadow', 'farmA', 'farmB', 'lawn', 'pitch', 'playground', 'wood', 'woodFar', 'wet', 'sand', 'gravel', 'rock', 'ice', 'gardens', 'commercial', 'industrial', 'railyard', 'quarry'];
     for (const id of order) {
       const list = groups.get(id);
       if (!list?.length) continue;
