@@ -51,7 +51,6 @@ const MAT = {
   lawn: { tex: 'pat-grass', worldM: 10, edge: 'soft' },
   farmA: { tex: 'pat-farm-a', worldM: 22, edge: 'wild' },
   farmB: { tex: 'pat-farm-b', worldM: 22, edge: 'wild' },
-  farmC: { tex: 'pat-farm-c', worldM: 22, edge: 'wild' },
   wood: { tex: 'pat-forest-floor', worldM: 7, edge: 'wild' },
   woodFar: { tex: 'pat-forest', worldM: 40, edge: 'wild' },
   wet: { tex: 'pat-wetland', worldM: 10, edge: 'wild' },
@@ -263,7 +262,7 @@ export class GroundPainter {
     for (const f of feats) {
       const { layer, cls, sub } = f;
       if (layer === 'landcover') {
-        if (cls === 'farmland') add((['farmA', 'farmB', 'farmC'] as const)[Math.abs(f.id) % 3], f);
+        if (cls === 'farmland') add((['farmA', 'farmB'] as const)[Math.abs(f.id) % 2], f);
         else if (cls === 'grass' || cls === 'meadow') add(PARK_SET.has(sub) ? 'lawn' : 'meadow', f);
         else if (cls === 'wood' || cls === 'forest') add(z < 15 && this.tex.image('pat-forest') ? 'woodFar' : 'wood', f);
         else if (cls === 'wetland') add('wet', f);
@@ -427,7 +426,7 @@ export class GroundPainter {
     main.globalCompositeOperation = 'source-over';
     fillWith(main, 'ground');
 
-    const order: MatId[] = ['meadow', 'farmA', 'farmB', 'farmC', 'lawn', 'pitch', 'playground', 'wood', 'woodFar', 'wet', 'sand', 'gravel', 'rock', 'gardens', 'commercial', 'industrial', 'railyard', 'quarry'];
+    const order: MatId[] = ['meadow', 'farmA', 'farmB', 'lawn', 'pitch', 'playground', 'wood', 'woodFar', 'wet', 'sand', 'gravel', 'rock', 'gardens', 'commercial', 'industrial', 'railyard', 'quarry'];
     for (const id of order) {
       const list = groups.get(id);
       if (!list?.length) continue;

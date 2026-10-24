@@ -92,8 +92,8 @@ export function buildStyle(mode: Mode, real?: RealSource): StyleSpecification {
       id: 'landcover-farm',
       type: 'fill',
       ...from('landcover', cls('farmland')),
-      // Drei Sorten Acker (Erde, Grün, Korn), je Feld eine: wie ein Flickenteppich
-      paint: { 'fill-pattern': ['match', ['%', ['to-number', ['coalesce', ['id'], 0]], 3], 0, 'pat-farm-a', 1, 'pat-farm-b', 'pat-farm-c'] as ExpressionSpecification },
+      // Zwei Sorten Acker, je Feld eine: wie ein Flickenteppich (Kevin 24.10.: zwei Felder reichen)
+      paint: { 'fill-pattern': ['match', ['%', ['to-number', ['coalesce', ['id'], 0]], 2], 0, 'pat-farm-a', 'pat-farm-b'] as ExpressionSpecification },
     },
     { id: 'landcover-farm-edge', type: 'line', ...from('landcover', cls('farmland')), paint: { 'line-color': '#6f6a46', 'line-width': z([[14, 0.6], [17, 2], [20, 5]]), 'line-opacity': 0.55, 'line-blur': 1 } },
     {

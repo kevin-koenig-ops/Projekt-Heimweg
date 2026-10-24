@@ -1287,8 +1287,7 @@ export class GameMap {
     }
     const fa = c('pat-farm-a');
     const fb = c('pat-farm-b');
-    const fc = c('pat-farm-c');
-    if (fa && fb && fc) set('soft-farm', ['match', ['%', ['to-number', ['coalesce', ['id'], 0]], 3], 0, fa, 1, fb, fc]);
+    if (fa && fb) set('soft-farm', ['match', ['%', ['to-number', ['coalesce', ['id'], 0]], 2], 0, fa, fb]);
     const floor = c('pat-forest-floor');
     if (floor) set('soft-wood', ['step', ['zoom'], '#4f5a33', DECOR_MINZOOM, floor]);
   }

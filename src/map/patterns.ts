@@ -5,7 +5,6 @@ import { rngFrom } from '../core/rng';
 import type { Season } from '../services/settings';
 import ackerErde from '../assets/textures/acker-erde.webp';
 import ackerGruen from '../assets/textures/acker-gruen.webp';
-import ackerKorn from '../assets/textures/acker-korn.webp';
 import fels from '../assets/textures/fels.webp';
 import grundboden from '../assets/textures/grundboden.webp';
 import rasen from '../assets/textures/rasen.webp';
@@ -38,10 +37,9 @@ const IMAGES: Record<string, { url: string; pr: number }> = {
   'pat-gravel': { url: grundboden, pr: 2 },
   'pat-rock': { url: fels, pr: 2.5 },
   'pat-wetland': { url: sumpf, pr: 2.5 },
-  // Äcker: drei Sorten, damit nicht jedes Feld gleich aussieht
+  // Äcker: zwei Sorten, damit nicht jedes Feld gleich aussieht
   'pat-farm-a': { url: ackerErde, pr: 2.5 },
   'pat-farm-b': { url: ackerGruen, pr: 2.5 },
-  'pat-farm-c': { url: ackerKorn, pr: 2.5 },
   'pat-farm': { url: ackerErde, pr: 2.5 },
   // Eigene Arten für Flächen, die bisher ein gemeinsames Bild hatten (Kevin, 23.10.: Textur für alles).
   // Bis ihr eigenes Bild da ist, nehmen sie das bisherige.
@@ -84,7 +82,6 @@ const SEASONAL: Record<string, string> = {
   'pat-farm': 'acker-a',
   'pat-farm-a': 'acker-a',
   'pat-farm-b': 'acker-b',
-  'pat-farm-c': 'acker-c',
   'pat-industrial': 'industrie',
   'pat-commercial': 'gewerbe',
   'pat-railyard': 'bahngelaende',
@@ -342,10 +339,9 @@ const PAINTERS: Record<string, [number, Painter]> = {
       specks(ctx, s, r, 26, ['#f1ead6', '#e8c84a', '#b79bcf', '#d0623f'], [1.4, 2.2], true);
     },
   ],
-  // Äcker: drei Sorten, damit nicht jedes Feld gleich aussieht
+  // Äcker: zwei Sorten, damit nicht jedes Feld gleich aussieht
   'pat-farm-a': field('#8f7250', '#7a5e40', '#a2845d', 'acker-erde'),
   'pat-farm-b': field('#8d9852', '#78833f', '#a1ab63', 'acker-gruen'),
-  'pat-farm-c': field('#bca865', '#a89354', '#cdbb7a', 'acker-korn'),
   // Wald von weitem: Baumkronen
   'pat-forest': [
     96,
