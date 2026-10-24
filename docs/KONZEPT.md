@@ -152,6 +152,22 @@ Jede Gegend bekommt eigene Aufträge, weil sie aus der echten Karte entstehen: w
 
 **Bauweise:** Auftrags-Vorlagen als Daten in content.ts (Art, Ziel-Bedingung, Texte mit Platzhaltern), das Spiel sucht passende echte Ziele und prüft das Erreichen wie bei Fundstellen (GPS stehend, Genauigkeit).
 
+## Karten sammeln: das Herz des Spiels (Kevin, 24.10.2026)
+
+Vorbild: Gwent in The Witcher 3 (rund 200 Karten, man sammelt für alle Fraktionen) und Slay the Spire (je Figur ein eigener Kartentopf). Karten sammeln, Decks bauen, damit spielen: Das soll die Langzeitmotivation sein. Dafür braucht es viel mehr Karten, und eine legendäre Karte soll ein echtes Ereignis sein.
+
+- **Acht Klassen mit eigenem Kartentopf:** Sanitäter (heilen, durchhalten), Jäger (Fernkampf, Fallen, später Hund), Schrauber (Geräte), Brecher (schwerer Nahkampf, Wut), Brenner (Feuer und Rauch), Funker (Lärm und Täuschung), Soldat (Schusswaffen), Streifer (schnell, leise, Kleinkram). Dazu neutrale Karten für alle.
+- **Ein Deck = eine Klasse plus neutrale Karten.** Gesammelt wird für alle Klassen, wechseln geht zu Hause jederzeit und kostenlos. Waffen darf jede Klasse tragen.
+- **Zahlen:** je Klasse 30 Karten (12 gewöhnlich, 9 selten, 5 episch, 4 legendär), dazu rund 70 neutrale: zusammen etwa 310 Karten, 40 davon legendär. Danach kommen, wie bei den Kampagnen, immer wieder **Karten-Editionen** dazu (z. B. 30 bis 40 je Saison), ohne an den alten etwas zu ändern.
+- **Karten aus Gegenden und Jahreszeiten:** manche Karten findet man nur am Meer, in den Bergen oder im Winter. Ein Grund, mal woanders hinzugehen, und etwas, worauf man sich jedes Jahr freut.
+- **Die Ziehung:** Legendäre Karten drehen sich langsam um, das Leuchten baut sich auf, dazu ein Klang. Bei 40 Legendären weiß man nie, welche es wird, und nicht jede passt zur eigenen Klasse. Jede ist in ihrer Nische stark, manche sind ein Grund, eine neue Klasse auszuprobieren.
+- **Doppelte sind nie wertlos:** Sie machen die Karte stärker (Stufe I bis V), danach werden sie zu **losen Seiten**. Mit genug Seiten schreibt man sich gezielt eine Karte ins Buch. So gibt es kein endloses Pech, dazu das Netz bei Sichtungen (spätestens nach 20 etwas Seltenes, nach 130 etwas Legendäres).
+- **Die Leiter:** Die stärksten Karten gibt es weiter oben: Rote Zonen, Weltbosse, Raids (siehe „Kampf: wie es weitergeht“). Das Balancing-Labor spielt einen Spieler über 90 Tage durch (20 Minuten und eine Stunde am Tag), damit jede Stufe der Leiter zur richtigen Zeit machbar wird.
+- **Neue Spielregeln mit den Klassen:** Markiert, Regeneration, Panzer, Täuschen, Patronen sparen.
+- **Die komplette Kartenliste** mit Name, Seltenheit, Kraft und Wirkung steht im Doc, Reiter „Klassen & Karten“. Alle heutigen Fähigkeiten sind darin auf die Klassen verteilt.
+- **Bauen, Schritt für Schritt:** erst das Grundgerüst (Klasse wählen und wechseln, Kartentöpfe, Kartenbuch nach Klassen), dann die Klassen nacheinander, jede mit Balancing-Test.
+- **Offen:** wie viele Fähigkeiten ins Deck dürfen (heute 4, für echtes Deckbauen eher 6 bis 10), wie Sichtungen auf die Klassen verteilt werden (Vorschlag: 50 % eigene Klasse, 30 % neutral, 20 % andere), wie viele lose Seiten eine Karte kostet.
+
 ## Kampf: wie es weitergeht (geplant)
 
 - **Kartensammlung:** Heute bringen nur Waffen neue Karten. Dazu kommen:
@@ -159,9 +175,11 @@ Jede Gegend bekommt eigene Aufträge, weil sie aus der echten Karte entstehen: w
   - **Werktisch-Gegenstände** als Einmalkarten: Brandflasche, Krähenfüße, Rauchdose. Kosten Material.
   - **Karten durch den Rang** und später **von Bewohnern**.
   - **Deck zusammenstellen:** Wer viele Karten hat, wählt vor dem Rausgehen aus (z. B. 10 Karten).
-- **Klassen:** Jede Vorgeschichte bringt 2 bis 3 eigene Karten mit (Rettungsdienst: „Erste Hilfe“, Werkstatt: „Improvisieren“, Hof & Wald: „Fährte lesen“, Kurierdienst: „Haken schlagen“). Ab dem Rang Streifer wählt man eine Richtung aus der Lore: **Landstreifer** (Feuer, Fallen, stark im Umland) oder **Stadtstreifer** (leise, länger in Roten Zonen). Klassenkarten machen höchstens ein Viertel des Decks aus, wechseln geht zu Hause. Man kann sich nie verskillen. Noch offen: Wird die Vorgeschichte selbst die Klasse oder getrennt davon?
-- **Dungeons (Rote Zonen):** eine Kette aus 3 bis 5 Kämpfen. Gesundheit und Waffen bleiben von Kampf zu Kampf. Dazwischen rasten oder plündern. Der Atemschutz ist die Uhr: nach einer festen Zahl Runden muss man raus, mit dem, was man hat. Abbrechen geht jederzeit. Nur vor Ort.
-- **Raids (Nester):** einmal pro Woche ein Nest mit großem Lebensbalken für alle Spieler. Jeder kämpft seine Runden, wann es passt, auch von zu Hause. Belohnung nach Anteil. Endgegner mit Phasen (ab halber Gesundheit ein neues Muster).
+- **Klassen:** seit 24.10. neu geplant, siehe „Karten sammeln: das Herz des Spiels“. Acht Klassen mit eigenen Kartentöpfen statt 2 bis 3 Karten je Vorgeschichte. Die Vorgeschichte bleibt die Geschichte deiner Figur.
+- **Dungeons (Rote Zonen), wie ein kleiner Slay-the-Spire-Durchgang:** Eingang ist eine Bunkertür auf der Karte, betreten wird vor Ort. Drinnen eine kurze Karte mit Abzweigungen, 4 bis 6 Räume: Kampf, Elite, Rast (heilen oder eine Karte verbessern), Fund, Ereignis, am Ende das Nest mit einem Boss. Gesundheit und Waffen bleiben von Raum zu Raum. Nach jedem Sieg wählt man 1 von 3 **Zonenfunden**, die nur in dieser Zone gelten. Der Atemschutz ist die Uhr: nach einer festen Zahl Runden muss man raus, mit dem, was man hat. Abbrechen geht jederzeit. Tiefen 1 bis 10 mit Bestmarke; tiefer heißt härter, bessere Beute und Karten, die es nur dort gibt.
+- **Raids (Nester):** einmal pro Woche meldet sich über das Funkgerät ein Nest mit großem Lebensbalken (z. B. 200) und Phasen (ab halber Gesundheit ruft es Helfer, ab einem Viertel rast es). Gekämpft wird von zu Hause, ein Versuch dauert ein paar Runden, der Schaden bleibt stehen. Zwei Versuche am Tag, die sich ansammeln (wer zwei Tage nicht spielt, hat sechs). Truhen nach Schaden, drei Schwierigkeiten, die schwerste schafft man erst nach Monaten. Mit Spielerkonten später ein gemeinsamer Lebensbalken für alle in einer Gegend, wie der Clan-Boss bei Raid.
+- **Weltbosse:** Ein großer Gegner steht ein paar Tage an einem echten Ort auf der Karte (z. B. „Der Vorarbeiter“ aus den Kapiteln). Wer hingeht, kämpft, der Schaden aller zählt zusammen. Belohnung: Boss-Karten, die es nur dort gibt.
+- **Arena und Duell (mit Spielerkonten, Version 2.0):** Erst eine **Arena** wie bei Raid: Dein Deck wird gespeichert, andere kämpfen dagegen, der Computer spielt es. Niemand wartet auf niemanden. Später ein **Duell** wie Quizduell: Jeder macht seinen Zug, wann er will, nach 6 Stunden zieht der Computer. Man kann nichts verlieren, nur gewinnen (Ruf, Abzeichen, lose Seiten).
 - **Eine Figur, viele Fähigkeiten:** Anders als bei Raid Shadow Legends sammelt man keine Helden. Man spielt immer die eigene Figur, die Vielfalt kommt aus den Fähigkeitenkarten im Deck. Jede Runde zieht man zufällig 4 Karten aus dem Deck und wählt, welche man spielt: Zufall bei der Hand, Entscheidung beim Spielen.
 - **Statuseffekte** (ohne Magie, alles Endzeit), nach und nach freigeschaltet:
   - **Brennt:** Schaden jede Runde (Brandflasche). Stark gegen Wandler.

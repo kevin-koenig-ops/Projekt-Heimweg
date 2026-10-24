@@ -25,9 +25,11 @@ Version 1.0 ist fertig, wenn der ganze Kreislauf ohne Lücken läuft: rausgehen,
 Das Kartensystem wird zum Rückgrat. Erst mehr Karten, dann längere Kämpfe.
 
 - **Kartensammlung:** Kniffe als seltene Funde, Werktisch-Gegenstände als Einmalkarten (Brandflasche, Krähenfüße, Rauchdose), Karten durch den Rang. Deck vor dem Rausgehen zusammenstellen.
-- **Klassen:** Vorgeschichte mit 2 bis 3 eigenen Karten, ab dem Rang Streifer Land- oder Stadtstreifer. Höchstens ein Viertel des Decks, zu Hause wechselbar.
-- **Rote Zonen als Dungeons:** 3 bis 5 Kämpfe hintereinander, der Atemschutz ist die Uhr, nur vor Ort, abbrechen geht immer.
+- **Klassen (neu geplant 24.10.):** acht Klassen mit je 30 Karten und eigenem Spielstil (Sanitäter, Jäger, Schrauber, Brecher, Brenner, Funker, Soldat, Streifer), dazu neutrale Karten, zusammen etwa 310. Ein Deck ist eine Klasse plus neutrale Karten, wechseln zu Hause jederzeit. Liste im Doc, Reiter „Klassen & Karten“. Bauen: erst Grundgerüst, dann Klasse für Klasse.
+- **Fortschritts-Simulation:** das Balancing-Labor spielt 90 Tage durch, damit Rote Zonen, Weltbosse und Raids zur richtigen Zeit machbar werden.
+- **Rote Zonen als Dungeons:** wie ein kleiner Slay-the-Spire-Durchgang: 4 bis 6 Räume mit Abzweigungen (Kampf, Elite, Rast, Fund, Ereignis), Boss am Ende, Zonenfunde nur für diese Zone, Tiefen 1 bis 10. Der Atemschutz ist die Uhr, betreten vor Ort, abbrechen geht immer.
 - **Raids von zu Hause:** wöchentliches Nest über das Funkgerät, zuerst allein gegen einen großen Gegner mit Phasen, mit Konten (Version 2.0) dann für alle gemeinsam.
+- **Weltbosse:** ein großer Gegner ein paar Tage an einem echten Ort, der Schaden aller zählt zusammen, Boss-Karten als Belohnung.
 
 ## Version 1.2: Geschichte und Bewohner
 
@@ -67,6 +69,7 @@ Das Kartensystem wird zum Rückgrat. Erst mehr Karten, dann längere Kämpfe.
 
 ## Version 2.0: Konten und Gemeinschaft
 
+- **Arena und Duell (Kevin, 24.10.):** erst eine Arena gegen gespeicherte Decks anderer Spieler (der Computer spielt sie), später ein Duell wie Quizduell: jeder zieht, wann er will, nach 6 Stunden zieht der Computer. Verlieren kostet nichts.
 - **Konto** (z. B. Google-Login): Spielstand auf mehreren Geräten, der Gast-Spielstand wird übernommen. Erste Stufe ohne eigenen Server: Spielstand im versteckten App-Ordner des eigenen Google Drive, bei zwei Geräten gewinnt der neuere Stand (mit Rückfrage). Für Mehrspieler (Raids für alle, Ranglisten) später ein Server in der EU, der mit denselben Spielregeln rechnet (`src/core`).
 - **Spuren anderer Spieler:** Notizen aus vorgegebenen Bausteinen (wie bei Dark Souls, kein freier Text), Vorratskisten, Warnschilder, Verstecke.
 - **Basen besuchen:** nur virtuell über Freundesliste oder Code, nie mit echtem Ort.
